@@ -12,6 +12,7 @@ char pass[] = "51552105315";                       //รหัสไวไฟ
 unsigned long myChannelNumber = 2307944;          //เลข ID
 const char* myWriteAPIKey = "HTV4C9BZ08SKNRUQ";  //API KEY
 
+const int Led_1 = 17;
 DHT dht(DHTPIN, DHTTYPE);
 WiFiClient client;
 
@@ -29,7 +30,7 @@ void setup() {
     Serial.println("\nConnected.");
   }
   ThingSpeak.begin(client);  // Initialize ThingSpeak
-
+  pinMode(Led_1, OUTPUT);
   Serial.println(F("DHTxx test!"));
   dht.begin();
 }
@@ -67,12 +68,18 @@ void loop() {
   } else {
     Serial.println("Problem updating channel. HTTP error code " + String(x));
   }
-  
-  Serial.print(F("Humidity: "));
-  Serial.print(h);
-  Serial.print(F("%  Temperature: "));
-  Serial.print(t);
-  Serial.print(F("°C "));
-  Serial.print(f);
-  Serial.println(F("°F"));
+
+  if (t > 28) {
+    digitalWrite(Led_1, 1);
+    Serial.println(F("อุณหภูมิเกิน 28 °C"));
+  } else {
+    Serial.print(F("Humidity: "));
+    Serial.print(h);
+    Serial.print(F("%  Temperature: "));
+    Serial.print(t);
+    Serial.print(F("°C "));
+    Serial.print(f);
+    Serial.println(F("°F"));
+  }
+
 }
