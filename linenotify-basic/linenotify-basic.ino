@@ -10,7 +10,8 @@ DHT dht(DHTPIN, DHTTYPE);
 const int Led_1 = 17;
 
 void setup() {
-  Serial.begin(115200); Serial.println();
+  Serial.begin(115200); 
+  Serial.println();
   Serial.println(LINE.getVersion());
   WiFi.begin(SSID, PASSWORD);
   Serial.printf("WiFi connecting to %s\n",  SSID);
