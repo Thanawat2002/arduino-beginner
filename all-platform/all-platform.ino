@@ -4,11 +4,6 @@
   Be sure to check out other examples!
  *************************************************************/
 
-/* Fill-in information from Blynk Device Info here */
-#define BLYNK_TEMPLATE_ID "TMPL6mBVuwHeE"
-#define BLYNK_TEMPLATE_NAME "Quickstart Template"
-#define BLYNK_AUTH_TOKEN "vpgI4XhUnFehRfq1k1CSHdBhhRIfZ6wq"
-
 /* Comment this out to disable prints and save space */
 #define BLYNK_PRINT Serial
 
@@ -16,28 +11,36 @@
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp32.h>
-#include <TridentTD_LineNotify.h> // line
-#include "ThingSpeak.h" // ThingSpeak
-#include <HTTPClient.h> // test
+#include <TridentTD_LineNotify.h>
+#include "ThingSpeak.h" 
+#include <HTTPClient.h> 
 
-// Config
-char ssid[] = "SetzeroDev-2.4G";
-char pass[] = "51552105315";
-#define LINE_TOKEN  "nPOdp8o3UoWcB0hU8h2WmbKF7r9J0XCVlotrlOGeXR7" 
-unsigned long myChannelNumber = 2307944;          //เลข ID
+// ############################# Config #################################
+char ssid[] = "SetzeroDev-2.4G"; // User Wifi
+char pass[] = "51552105315"; // Password Wifi
+#define LINE_TOKEN  "LVGavsQCcAAZwhh77ylAQ03HZPNhEgSKISnkgs45YRs" // Token Line Notify
+unsigned long myChannelNumber = 2307944;          //เลข Channel ID
 const char* myWriteAPIKey = "HTV4C9BZ08SKNRUQ";  //API KEY
-String GAS_ID = "AKfycbz8YWs9xx1w7zJEsa-qe_kTNerT1fvpOB2UwkdpyDgcbSgKcjuGpfLaaTpdsfVpmzNOJg";
-//
+String GAS_ID = "AKfycbz8YWs9xx1w7zJEsa-qe_kTNerT1fvpOB2UwkdpyDgcbSgKcjuGpfLaaTpdsfVpmzNOJg"; // ของ google sheets
+/* Copy Device Info */
+#define BLYNK_TEMPLATE_ID "TMPL6mBVuwHeE"
+#define BLYNK_TEMPLATE_NAME "Quickstart Template"
+#define BLYNK_AUTH_TOKEN "vpgI4XhUnFehRfq1k1CSHdBhhRIfZ6wq"
+// ######################################################################
 
 
-const int LED_1 = 26;
+// ############################# Config pin #############################
+#define DHTPIN 26
+const int LED_1 = 16;
 const int LED_2 = 17;
+// ######################################################################
+
+
 
 const char* host = "script.google.com";
 const int httpsPort = 443;
 
 BlynkTimer timer;
-#define DHTPIN 27
 #define DHTTYPE DHT22
 DHT dht(DHTPIN, DHTTYPE);
 WiFiClient client;
@@ -80,9 +83,7 @@ void myTimerEvent() {
   }
 
   if (t > 28) {
-    digitalWrite(LED_1, 1);
-    LINE.notify("อุณหภูมิขณะนี้ "+String(t)+" องศา"); 
-    LINE.notify("ความชื้นขณะนี้ "+String(h)+" %");  
+    digitalWrite(LED_1, 1); 
   } else {
     digitalWrite(LED_1, 0);
   }
@@ -104,8 +105,6 @@ void setup() {
   // Debug console
   Serial.begin(115200);
 
-  // Setup a function to be called every second
-  // ช่วงเวลาทำงาน
   timer.setInterval(10000L, myTimerEvent);
   WiFi.begin(ssid, pass);
   Serial.printf("WiFi connecting to %s\n",  ssid);
@@ -119,11 +118,6 @@ void setup() {
   LINE.setToken(LINE_TOKEN);
 
   ThingSpeak.begin(client);
-
-  // Serial.println("");
-  // Serial.print("Successfully connected to : ");
-  // Serial.println(ssid);
-  // Serial.print("IP address: ");
   client_secure.setInsecure();
 
   pinMode(LED_1, OUTPUT);
@@ -219,7 +213,7 @@ void sendBlynk(float t, float h) {
 
 void sendLinenotify(float t, float h) {
 
-  if (t > 28) {
+  if (t > 20) {
     digitalWrite(LED_1, 1);
     LINE.notify("อุณหภูมิขณะนี้ "+String(t)+" องศา"); 
     LINE.notify("ความชื้นขณะนี้ "+String(h)+" %");  
