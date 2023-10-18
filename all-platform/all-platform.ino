@@ -3,6 +3,10 @@
   This is a simple demo of sending and receiving some data.
   Be sure to check out other examples!
  *************************************************************/
+/* Copy Device Info */
+#define BLYNK_TEMPLATE_ID "TMPL6mBVuwHeE"
+#define BLYNK_TEMPLATE_NAME "Quickstart Template"
+#define BLYNK_AUTH_TOKEN "vpgI4XhUnFehRfq1k1CSHdBhhRIfZ6wq"
 
 /* Comment this out to disable prints and save space */
 #define BLYNK_PRINT Serial
@@ -16,21 +20,17 @@
 #include <HTTPClient.h> 
 
 // ############################# Config #################################
-char ssid[] = "SetzeroDev-2.4G"; // User Wifi
+char ssid[] = "SetzeroDev-2.4G"; // Username Wifi
 char pass[] = "51552105315"; // Password Wifi
 #define LINE_TOKEN  "LVGavsQCcAAZwhh77ylAQ03HZPNhEgSKISnkgs45YRs" // Token Line Notify
 unsigned long myChannelNumber = 2307944;          //เลข Channel ID
 const char* myWriteAPIKey = "HTV4C9BZ08SKNRUQ";  //API KEY
-String GAS_ID = "AKfycbz8YWs9xx1w7zJEsa-qe_kTNerT1fvpOB2UwkdpyDgcbSgKcjuGpfLaaTpdsfVpmzNOJg"; // ของ google sheets
-/* Copy Device Info */
-#define BLYNK_TEMPLATE_ID "TMPL6mBVuwHeE"
-#define BLYNK_TEMPLATE_NAME "Quickstart Template"
-#define BLYNK_AUTH_TOKEN "vpgI4XhUnFehRfq1k1CSHdBhhRIfZ6wq"
+String GAS_ID = "AKfycbyml0iiWA0hj9heMYYs6Aaw_BGKKcJ0PAHcxvLS7gryOezO55xYWJ9h-NxBaaqvxyiE"; // ของ google sheets
 // ######################################################################
 
 
 // ############################# Config pin #############################
-#define DHTPIN 26
+#define DHTPIN 27
 const int LED_1 = 16;
 const int LED_2 = 17;
 // ######################################################################
@@ -84,8 +84,12 @@ void myTimerEvent() {
 
   if (t > 28) {
     digitalWrite(LED_1, 1); 
-  } else {
+    delay(100);
     digitalWrite(LED_1, 0);
+    delay(100);
+  } else {
+    digitalWrite(LED_1, 1);
+    digitalWrite(LED_2, 0); 
   }
 
   Serial.print(F("Humidity: "));
@@ -214,11 +218,11 @@ void sendBlynk(float t, float h) {
 void sendLinenotify(float t, float h) {
 
   if (t > 20) {
-    digitalWrite(LED_1, 1);
+    // digitalWrite(LED_1, 1);
     LINE.notify("อุณหภูมิขณะนี้ "+String(t)+" องศา"); 
     LINE.notify("ความชื้นขณะนี้ "+String(h)+" %");  
   } else {
-    digitalWrite(LED_1, 0);
+    // digitalWrite(LED_1, 0);
   }
 
 }
